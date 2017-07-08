@@ -44,6 +44,12 @@ screening. The bonus is handled probabilistically, computing
 an expected return based on the ratio of the
 positive-performing estimates converted to a probability.
 
+This solver handles only the easy part of the
+problem. Getting good estimates to feed it is the real
+challenge, and the whole point of FML. Probably a machine
+learner could be trained, but I'm out of energy — I'll leave
+that task to other, even geekier FML afficionados.
+
 -----
 
 This program is licensed under the GPL version 3 or later.

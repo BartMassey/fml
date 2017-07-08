@@ -1,11 +1,16 @@
 # FML - A Fantasy Movie League™ Solver
 Copyright (c) 2017 Po Huit
 
+I follow Wilhelm Arcturus's excellent blog
+[*The Ancient Gaming Noob*](http://tagn.wordpress.com), and
+have been really interested and amused by his reports on
+the
+[*Fantasy Movie League*](http://fantasymovieleague.com)
+game he and his friends have been playing.
+
 I started playing with a Linear Programming solver a few
 days ago with the idea of bringing some mathematical
-optimization to
-[*Fantasy Movie League*](http://fantasymovieleague.com). Only
-after building a program for
+optimization to FML. Only after building a program for
 [`lp_solve`](http://lpsolve.sourceforge.net) did I
 understand the rules well enough to get that the objective
 is not linear. The penalty for blank screens and the bonus
@@ -26,18 +31,18 @@ it in Rust, there's plenty of optimizations available if it
 turns out to be too slow someday. I don't think it will.
 
 The input (on standard input) is a CSV file. Each row
-contains the name of the movie, the price of that movie, and
-your predicted value for that movie in millions of dollars
-(fractions are ok). Note that the exchange rate between
-price and value appears to be $100K box-office per dollar in
-showing cost. All the solver does is find an optimal lineup
-given your predictions.
+contains the name of the movie, the price of the movie in
+dollars, and a predicted value for that movie in millions of
+dollars (fractions are ok). Note that the exchange rate
+between price and value appears to be $100K box-office per
+dollar in showing cost. All the solver does is find an
+optimal lineup given the prices and predictions.
 
 The solver takes the $2M penalty per empty screen into
-account. The solver takes the $2M bonus per best-performer
-screening into account probabilistically, computing it
-automatically as an expected return based on the ratio of
-the positive-performing estimates.
+account, as well as the $2M bonus per best-performer
+screening. The bonus is handled probabilistically, computing
+an expected return based on the ratio of the
+positive-performing estimates converted to a probability.
 
 -----
 

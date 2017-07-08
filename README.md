@@ -19,10 +19,10 @@ to use.
 
 So I wrote this brute-force depth-first search solver. I
 used Python 3, because apparently I wanted it to be as slow
-as feasible. Turns out it's plenty fast anyhow. Aside from
-rewriting it in Rust, there's plenty of optimizations
-available if it turns out to be too slow someday. I don't
-think it will.
+as feasible. Turns out it's plenty fast anyhow, running in
+about 2s on a sample lineup on my box. Aside from rewriting
+it in Rust, there's plenty of optimizations available if it
+turns out to be too slow someday. I don't think it will.
 
 The input (on standard input) is a CSV file. Each row
 contains the name of the movie, the price of that movie, and

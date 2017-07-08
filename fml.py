@@ -1,31 +1,55 @@
+# Compute an optimal lineup for Fantasy Movie League
+# from performance estimates.
+
 import csv
 from sys import stdin
 
+# Record of information about a movie.
 class Movie():
     def __init__(self, row):
         self.abbrev = row[0]
         self.cost = int(row[1])
         self.value = float(row[2])
+        self.best_prob = 0.0
 
 # Get the lineup.
 reader = csv.reader(stdin)
 movies = {row[0]: Movie(row) for row in reader}
 
+# Set the best-performer probabilities.
+pmass = 0.0
+for abbrev in movies:
+    m = movies[abbrev]
+    p = m.value * 10 / m.cost
+    if p > 0.0:
+        m.best_prob = p
+        pmass += p
+for abbrev in movies:
+    m = movies[abbrev]
+    if m.best_prob > 0.0:
+        m.best_prob /= pmass
+
+# The estimated value of the given lineup.
 def lineup_value(lineup):
     screens = 0
     value = 0
     for abbrev in lineup:
+        movie = movies[abbrev]
         showings = lineup[abbrev]
         screens += showings
-        value += showings * movies[abbrev].value
-    return value - 2.0 * (8 - screens)
+        value += showings * (movie.value + 2.0 * movie.best_prob)
+    return round(value - 2.0 * (8 - screens), 1)
 
+# Number of screens used in the given lineup.
 def lineup_screens(lineup):
     screens = 0
     for abbrev in lineup:
         screens += lineup[abbrev]
     return screens
 
+# Do a depth-first search (from back-to-front)
+# of the remaining list finding the best augmentation
+# of the given lineup under the given budget.
 def best_lineup(remaining, lineup, budget):
     screens = lineup_screens(lineup)
     if screens < 0 or screens > 8:
@@ -51,7 +75,8 @@ def best_lineup(remaining, lineup, budget):
         del lineup[target]
     return best
 
+# Show the estimate.
 answer = best_lineup(list(movies), dict(), 1000)
 for m in answer:
-    print(m, answer[m])
+    print(answer[m], m)
 print(lineup_value(answer))

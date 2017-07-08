@@ -1,3 +1,8 @@
+# Copyright (c) 2017 Po Huit
+# [This program is licensed under the GPL version 3 or later.]
+# Please see the file COPYING in the source
+# distribution of this software for license terms.
+
 # Compute an optimal lineup for Fantasy Movie League
 # from performance estimates.
 

@@ -1,4 +1,5 @@
 # FML - A Fantasy Movie League™ Solver
+Copyright (c) 2017 Po Huit
 
 I started playing with a Linear Programming solver a few
 days ago with the idea of bringing some mathematical
@@ -37,3 +38,9 @@ account. The solver takes the $2M bonus per best-performer
 screening into account probabilistically, computing it
 automatically as an expected return based on the ratio of
 the positive-performing estimates.
+
+-----
+
+This program is licensed under the GPL version 3 or later.
+Please see the file COPYING in the source distribution of
+this software for license terms.

@@ -1,12 +1,34 @@
 # FML - A Fantasy Movie League™ Solver
 Copyright (c) 2017 Po Huit
 
+FML is a brute-force depth-first solver for optimizing
+[*Fantasy Movie League™*](http://fantasymovieleague.com)
+picks. The solver finds an optimal lineup given
+prices and predictions: both prices and predictions must be
+provided by the user.
+
+## Usage
+
+This program requires Python: should work with both Python 2
+and Python 3. Try it out on the provided sample by running:
+
+        python fml.py lineup.csv
+
+The input may also be provided on standard input.
+
+The input is a CSV file. Each row contains the name of the
+movie, the price of the movie in dollars, and a predicted
+value for that movie in millions of dollars (fractions are
+ok). Note that the exchange rate between price and value
+appears to be $100K box-office per dollar in showing cost.
+
+## Background
+
 I follow Wilhelm Arcturus's excellent blog
 [*The Ancient Gaming Noob*](http://tagn.wordpress.com), and
-have been really interested and amused by his reports on
-the
-[*Fantasy Movie League*](http://fantasymovieleague.com)
-game he and his friends have been playing.
+have been really interested and amused by his reports on the
+*Fantasy Movie League™* game he and his friends have been
+playing.
 
 I started playing with a Linear Programming solver a few
 days ago with the idea of bringing some mathematical
@@ -23,20 +45,15 @@ constraints and nonlinear objectives I could find in a quick
 search was written in FORTRAN and looked to be really hard
 to use.
 
-So I wrote this brute-force depth-first search solver. I
-used Python 3, because apparently I wanted it to be as slow
+So I wrote the brute-force solver you see here.
+
+I used Python, because apparently I wanted it to be as slow
 as feasible. Turns out it's plenty fast anyhow, running in
 about 2s on a sample lineup on my box. Aside from rewriting
 it in Rust, there's plenty of optimizations available if it
 turns out to be too slow someday. I don't think it will.
 
-The input (on standard input) is a CSV file. Each row
-contains the name of the movie, the price of the movie in
-dollars, and a predicted value for that movie in millions of
-dollars (fractions are ok). Note that the exchange rate
-between price and value appears to be $100K box-office per
-dollar in showing cost. All the solver does is find an
-optimal lineup given the prices and predictions.
+## Notes
 
 The solver takes the $2M penalty per empty screen into
 account, as well as the $2M bonus per best-performer
@@ -50,7 +67,7 @@ challenge, and the whole point of FML. Probably a machine
 learner could be trained, but I'm out of energy — I'll leave
 that task to other, even geekier FML afficionados.
 
------
+## License
 
 This program is licensed under the GPL version 3 or later.
 Please see the file COPYING in the source distribution of

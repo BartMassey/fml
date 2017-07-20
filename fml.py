@@ -6,8 +6,10 @@
 # Compute an optimal lineup for Fantasy Movie League
 # from performance estimates.
 
+from __future__ import print_function
+
 import csv
-from sys import stdin
+import sys
 
 # Record of information about a movie.
 class Movie():
@@ -18,7 +20,7 @@ class Movie():
         self.best_prob = 0.0
 
 # Get the lineup.
-reader = csv.reader(stdin)
+reader = csv.reader(sys.stdin)
 movies = {row[0]: Movie(row) for row in reader}
 
 # Set the best-performer probabilities.

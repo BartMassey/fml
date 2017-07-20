@@ -20,7 +20,10 @@ class Movie():
         self.best_prob = 0.0
 
 # Get the lineup.
-reader = csv.reader(sys.stdin)
+lineup_file = sys.stdin
+if len(sys.argv) >= 2:
+    lineup_file = open(sys.argv[1], newline="")
+reader = csv.reader(lineup_file)
 movies = {row[0]: Movie(row) for row in reader}
 
 # Set the best-performer probabilities.

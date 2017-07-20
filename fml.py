@@ -14,7 +14,7 @@ import sys
 # Record of information about a movie.
 class Movie():
     def __init__(self, row):
-        self.abbrev = row[0]
+        self.title = row[0]
         self.cost = int(row[1])
         self.value = float(row[2])
         self.best_prob = 0.0
@@ -24,69 +24,58 @@ lineup_file = sys.stdin
 if len(sys.argv) >= 2:
     lineup_file = open(sys.argv[1], newline="")
 reader = csv.reader(lineup_file)
-movies = {row[0]: Movie(row) for row in reader}
+movies = [Movie(row) for row in reader]
+# Add the option of an empty screen.
+movies += [Movie(('[empty screen]', 0, -2.0))]
 
 # Set the best-performer probabilities.
 pmass = 0.0
-for abbrev in movies:
-    m = movies[abbrev]
+for m in movies:
+    if m.cost == 0:
+        continue
     p = m.value * 10 / m.cost
     if p > 0.0:
         m.best_prob = p
         pmass += p
-for abbrev in movies:
-    m = movies[abbrev]
+for m in movies:
     if m.best_prob > 0.0:
         m.best_prob /= pmass
 
-# The estimated value of the given lineup.
-def lineup_value(lineup):
-    screens = 0
-    value = 0
-    for abbrev in lineup:
-        movie = movies[abbrev]
-        showings = lineup[abbrev]
-        screens += showings
-        value += showings * (movie.value + 2.0 * movie.best_prob)
-    return round(value - 2.0 * (8 - screens), 1)
-
-# Number of screens used in the given lineup.
-def lineup_screens(lineup):
-    screens = 0
-    for abbrev in lineup:
-        screens += lineup[abbrev]
-    return screens
-
-# Do a depth-first search (from back-to-front)
-# of the remaining list finding the best augmentation
-# of the given lineup under the given budget.
-def best_lineup(remaining, lineup, budget):
-    screens = lineup_screens(lineup)
-    if screens < 0 or screens > 8:
-        print("bad screens", screens)
-        assert False
-    if remaining == [] or screens == 8:
-        return dict(lineup)
-    best = dict(lineup)
-    best_value = lineup_value(lineup)
-    target = remaining.pop()
-    cost = movies[target].cost
-    max_showings = min(8 - screens, budget // cost)
+# Do a depth-first search of the remaining list finding the
+# best number of showings of the given movie index with the
+# given screen and dollar budget.  Returns a value
+# and the corresponding lineup.
+def opt_lineup(movie, screens, budget):
+    assert screens <= 8
+    assert budget >= 0
+    if movie > len(movies) or screens <= 0:
+        return (0, [])
+    m = movies[movie]
+    cost = m.cost
+    # Fill the remaining space with empty screens.
+    if cost == 0:
+        return (screens * m.value, [(screens, movie)])
+    value = m.value + m.best_prob * 2.0
+    max_showings = min(screens, int(budget // cost))
+    best_value = None
+    best_lineup = None
     for showings in range(max_showings + 1):
         next_budget = budget - showings * cost
-        if showings > 0:
-            lineup[target] = showings
-        opt_lineup = best_lineup(list(remaining), lineup, next_budget)
-        opt_value = lineup_value(opt_lineup)
-        if opt_value > best_value:
-            best = opt_lineup
-            best_value = opt_value
-    if target in lineup:
-        del lineup[target]
-    return best
+        next_screens = screens - showings
+        next_value, next_lineup = \
+          opt_lineup(movie + 1, next_screens, next_budget)
+        next_value += showings * value
+        if best_value == None or next_value > best_value:
+            best_value = next_value
+            if showings > 0:
+                best_lineup = [(showings, movie)] + next_lineup
+            else:
+                best_lineup = next_lineup
+    assert best_value != None
+    return (best_value, best_lineup)
 
 # Show the estimate.
-answer = best_lineup(list(movies), dict(), 1000)
-for m in answer:
-    print(answer[m], m)
-print(lineup_value(answer))
+value, lineup = opt_lineup(0, 8, 1000)
+for n, m in lineup:
+    print(n, movies[m].title)
+print("$%.1fM" % (value,))

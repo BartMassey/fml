@@ -10,11 +10,16 @@ provided by the user.
 ## Usage
 
 This program requires Python: should work with both Python 2
-and Python 3. Try it out on the provided sample by running:
+and Python 3. Try it out on the provided sample by running
 
-        python fml.py lineup.csv
+      python fml.py lineup.csv
 
-The input may also be provided on standard input.
+The input may also be provided on standard input. The output
+for the sample input looks like this:
+
+      6 Car Heists
+      2 Carbots
+      $113.2M
 
 The input is a CSV file. Each row contains the name of the
 movie, the price of the movie in dollars, and a predicted
@@ -49,9 +54,10 @@ So I wrote the brute-force solver you see here.
 
 I used Python, because apparently I wanted it to be as slow
 as feasible. Turns out it's plenty fast anyhow, running in
-about 2s on a sample lineup on my box. Aside from rewriting
-it in Rust, there's plenty of optimizations available if it
-turns out to be too slow someday. I don't think it will.
+about 0.4s on a sample lineup on my box. Aside from
+rewriting it in Rust, there's plenty of optimizations
+available if it turns out to be too slow someday. I don't
+think it will.
 
 ## Notes
 

@@ -1,21 +1,23 @@
-# FML - A Fantasy Movie League™ Solver
+# fml - A Fantasy Movie League™ Solver
 Copyright (c) 2017 Po Huit
 
-FML is a brute-force depth-first solver for optimizing
+`fml` is a Python program that optimizes
 [*Fantasy Movie League™*](http://fantasymovieleague.com)
-picks. The solver finds an optimal lineup given
-prices and predictions: both prices and predictions must be
-provided by the user.
+picks. The solver finds an optimal lineup given prices and
+predictions: both prices and predictions must be provided by
+the user.
 
 ## Usage
 
-This program requires Python: should work with both Python 2
-and Python 3. Try it out on the provided sample by running
+This program should work with Python 2, Python 3 or
+[PyPy](http://pypy.org). (Python 2 is likely to be fastest,
+while PyPy is likely slowest [!] due to compilation time.)
+Try `fml` out on the provided sample by running
 
       python fml.py lineup.csv
 
-The input may also be provided on standard input. The output
-for the sample input looks like this:
+(The input may also be provided on standard input.) The
+output for the provided sample input should look like this:
 
       6 Car Heists
       2 Carbots
@@ -37,29 +39,34 @@ have been really interested and amused by his reports on the
 *Fantasy Movie League™* game he and his friends have been
 playing.
 
-I started playing with a Linear Programming solver a few
-days ago with the idea of bringing some mathematical
-optimization to FML. Only after building a program for
-[`lp_solve`](http://lpsolve.sourceforge.net) did I
+I started playing with a Linear Programming solver a while
+back with the idea of bringing some mathematical
+optimization to FML players. Only after building a program
+for [`lp_solve`](http://lpsolve.sourceforge.net) did I
 understand the rules well enough to get that the objective
 is not linear. The penalty for blank screens and the bonus
 for screens with the best bargain need to be included in the
-objective function, and make it nonlinear (and
-non-differentiable).
+objective function. These bonuses and penalties make it
+nonlinear (and non-differentiable).
 
 The only open source code for dealing with linear
 constraints and nonlinear objectives I could find in a quick
 search was written in FORTRAN and looked to be really hard
 to use.
 
-So I wrote the brute-force solver you see here.
-
-I used Python, because apparently I wanted it to be as slow
-as feasible. Turns out it's plenty fast anyhow, running in
-less than 0.4s on the provided sample lineup on my box —
-under 0.2s if I use [PyPy](http://pypy.org).
+So I wrote from scratch the solver you see here.
 
 ## Notes
+
+This solver uses memoized depth-first search in the space of
+screen assignments. The solver is not algorithmically
+super-efficient. However, the instance size here is small so
+it turns out not to matter.
+
+I used Python, because apparently I wanted my program to be
+as slow as feasible. Turns out it's plenty fast anyhow,
+running in less than 0.1s in Python 2 on the provided sample
+lineup on my box.
 
 The solver takes the $2M penalty per empty screen into
 account, as well as the $2M bonus per best-performer

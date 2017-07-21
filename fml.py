@@ -15,7 +15,9 @@ import sys
 class Movie():
     def __init__(self, row):
         self.title = row[0]
-        self.cost = int(row[1])
+        self.cost = row[1]
+        if self.cost != None:
+            self.cost = int(self.cost)
         self.value = float(row[2])
         self.best_prob = 0.0
 
@@ -33,12 +35,12 @@ if len(sys.argv) >= 2:
 reader = csv.reader(lineup_file)
 movies = [Movie(row) for row in reader]
 # Add the option of an empty screen.
-movies += [Movie(('[empty screen]', 0, -2.0))]
+movies += [Movie(('[empty screen]', None, -2.0))]
 
 # Set the best-performer probabilities.
 pmass = 0.0
 for m in movies:
-    if m.cost == 0:
+    if m.cost == None:
         continue
     p = m.value * 10 / m.cost
     if p > 0.0:
@@ -48,11 +50,13 @@ for m in movies:
     if m.best_prob > 0.0:
         m.best_prob /= pmass
 
-# Do a depth-first search of the remaining list finding the
+# Do a memoized depth-first search of the remaining list finding the
 # best number of showings of the given movie index with the
 # given screen and dollar budget.  Returns a value
 # and the corresponding lineup.
+memo = dict()
 def opt_lineup(movie, screens, budget):
+    global memo
     assert screens <= 8
     assert budget >= 0
     assert movie < len(movies)
@@ -63,8 +67,12 @@ def opt_lineup(movie, screens, budget):
     cost = m.cost
     # Base case: hit the empty screen.
     # Fill the remaining space with empty screens.
-    if cost == 0:
+    if cost == None:
         return (screens * m.value, [(screens, movie)])
+    # Base case: memo table already has the value we need.
+    args = (movie, screens, budget)
+    if args in memo:
+        return memo[args]
     value = m.value + m.best_prob * 2.0
     max_showings = min(screens, int(budget // cost))
     best_value = None
@@ -82,7 +90,9 @@ def opt_lineup(movie, screens, budget):
             else:
                 best_lineup = next_lineup
     assert best_value != None
-    return (best_value, best_lineup)
+    result = (best_value, best_lineup)
+    memo[args] = result
+    return result
 
 # Show the estimate.
 value, lineup = opt_lineup(0, 8, 1000)

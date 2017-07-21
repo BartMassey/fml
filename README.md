@@ -21,11 +21,13 @@ for the sample input looks like this:
       2 Carbots
       $113.2M
 
-The input is a CSV file. Each row contains the name of the
-movie, the price of the movie in dollars, and a predicted
-value for that movie in millions of dollars (fractions are
-ok). Note that the exchange rate between price and value
-appears to be $100K box-office per dollar in showing cost.
+The input is a
+[CSV](http://en.wikipedia.org/wiki/Comma-separated_values)
+file. Each row contains the name of the movie, the price of
+the movie in dollars, and a predicted value for that movie
+in millions of dollars (fractions are ok). Note that the
+exchange rate between price and value appears to be $100K
+box-office per dollar in showing cost.
 
 ## Background
 
@@ -54,10 +56,8 @@ So I wrote the brute-force solver you see here.
 
 I used Python, because apparently I wanted it to be as slow
 as feasible. Turns out it's plenty fast anyhow, running in
-about 0.4s on a sample lineup on my box. Aside from
-rewriting it in Rust, there's plenty of optimizations
-available if it turns out to be too slow someday. I don't
-think it will.
+less than 0.4s on the provided sample lineup on my box —
+under 0.2s if I use [PyPy](http://pypy.org).
 
 ## Notes
 

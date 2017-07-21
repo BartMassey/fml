@@ -22,7 +22,14 @@ class Movie():
 # Get the lineup.
 lineup_file = sys.stdin
 if len(sys.argv) >= 2:
-    lineup_file = open(sys.argv[1], newline="")
+    fn = sys.argv[1]
+    v = sys.version_info[0]
+    if v == 2:
+        lineup_file = open(fn, "rb")
+    elif v == 3:
+        lineup_file = open(fn, newline="")
+    else:
+        assert False
 reader = csv.reader(lineup_file)
 movies = [Movie(row) for row in reader]
 # Add the option of an empty screen.

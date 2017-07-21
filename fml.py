@@ -55,10 +55,13 @@ for m in movies:
 def opt_lineup(movie, screens, budget):
     assert screens <= 8
     assert budget >= 0
-    if movie > len(movies) or screens <= 0:
+    assert movie < len(movies)
+    # Base case: out of screens.
+    if screens <= 0:
         return (0, [])
     m = movies[movie]
     cost = m.cost
+    # Base case: hit the empty screen.
     # Fill the remaining space with empty screens.
     if cost == 0:
         return (screens * m.value, [(screens, movie)])

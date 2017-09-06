@@ -19,8 +19,26 @@ class Movie():
         self.cost = row[1]
         if self.cost != None:
             self.cost = int(self.cost)
-        self.value = float(row[2])
+        self.values = []
+        values = row[2].split("/")
+        prob = 0.0
+        for pvs in values[:-1]:
+            ps, vs = pvs.split("%")
+            p = float(ps)
+            v = float(vs)
+            prob += p / 100.0
+            assert prob < 1.0
+            self.values.append((p, v))
+        p = 1.0 - prob
+        v = float(values[-1])
+        self.values.append((p, v))
         self.best_prob = 0.0
+
+    def value(self):
+        ev = 0.0
+        for p, v in self.values:
+            ev += p * v
+        return ev
 
 # Get the lineup.
 lineup_file = sys.stdin
@@ -43,7 +61,7 @@ pmass = 0.0
 for m in movies:
     if m.cost == None:
         continue
-    p = m.value * 10 / m.cost
+    p = m.value() * 10 / m.cost
     if p > 0.0:
         m.best_prob = p
         pmass += p
@@ -69,12 +87,12 @@ def opt_lineup(movie, screens, budget):
     # Base case: hit the empty screen.
     # Fill the remaining space with empty screens.
     if cost == None:
-        return (screens * m.value, [(screens, movie)])
+        return (screens * m.value(), [(screens, movie)])
     # Base case: memo table already has the value we need.
     args = (movie, screens, budget)
     if args in memo:
         return memo[args]
-    value = m.value + m.best_prob * 2.0
+    value = m.value() + m.best_prob * 2.0
     max_showings = min(screens, int(budget // cost))
     best_value = None
     best_lineup = None

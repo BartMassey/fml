@@ -24,21 +24,22 @@ class Movie():
         prob = 0.0
         for pvs in values[:-1]:
             ps, vs = pvs.split("%")
-            p = float(ps)
+            p = float(ps) / 100.0
             v = float(vs)
-            prob += p / 100.0
+            prob += p
             assert prob < 1.0
             self.values.append((p, v))
         p = 1.0 - prob
         v = float(values[-1])
         self.values.append((p, v))
         self.best_prob = 0.0
+        print(self.title, self.values)
 
-    def value(self):
-        ev = 0.0
+    def ev(self):
+        result = 0.0
         for p, v in self.values:
-            ev += p * v
-        return ev
+            result += p * v
+        return result
 
 # Get the lineup.
 lineup_file = sys.stdin
@@ -54,14 +55,14 @@ if len(sys.argv) >= 2:
 reader = csv.reader(lineup_file)
 movies = [Movie(row) for row in reader]
 # Add the option of an empty screen.
-movies += [Movie(('[empty screen]', None, -2.0))]
+movies += [Movie(('[empty screen]', None, "-2.0"))]
 
 # Set the best-performer probabilities.
 pmass = 0.0
 for m in movies:
     if m.cost == None:
         continue
-    p = m.value() * 10 / m.cost
+    p = m.ev() * 10 / m.cost
     if p > 0.0:
         m.best_prob = p
         pmass += p
@@ -87,12 +88,12 @@ def opt_lineup(movie, screens, budget):
     # Base case: hit the empty screen.
     # Fill the remaining space with empty screens.
     if cost == None:
-        return (screens * m.value(), [(screens, movie)])
+        return (screens * m.ev(), [(screens, movie)])
     # Base case: memo table already has the value we need.
     args = (movie, screens, budget)
     if args in memo:
         return memo[args]
-    value = m.value() + m.best_prob * 2.0
+    value = m.ev() + m.best_prob * 2.0
     max_showings = min(screens, int(budget // cost))
     best_value = None
     best_lineup = None

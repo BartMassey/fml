@@ -1,3 +1,4 @@
+#!/usr/bin/python2
 # Copyright (c) 2017 Po Huit
 # [This program is licensed under the GPL version 3 or later.]
 # Please see the file COPYING in the source

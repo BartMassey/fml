@@ -93,7 +93,9 @@ def opt_lineup(movie, screens, budget):
     args = (movie, screens, budget)
     if args in memo:
         return memo[args]
-    value = m.ev() + m.best_prob * 2.0
+    value = m.ev()
+    if m.best_prob != None:
+        value += m.best_prob * 2.0
     max_showings = min(screens, int(budget // cost))
     best_value = None
     best_lineup = None

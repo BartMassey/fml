@@ -19,17 +19,24 @@ Try `fml` out on the provided sample by running
 (The input may also be provided on standard input.) The
 output for the provided sample input should look like this:
 
-      6 Car Heists
+      1 Mr. Hero [Sun]
+      3 Car Heists
       2 Carbots
-      $113.2M
+      2 The Dwelling Horror
+      $110.0M
 
 The input is a
 [CSV](http://en.wikipedia.org/wiki/Comma-separated_values)
 file. Each row contains the name of the movie, the price of
-the movie in dollars, and a predicted value for that movie
-in millions of dollars (fractions are ok). Note that the
-exchange rate between price and value appears to be $100K
-box-office per dollar in showing cost.
+the movie in dollars, and predicted values for that movie in
+millions of dollars (fractions are ok). A movie can have
+several predictions, separated by slashes. All but the last
+should have a percent probability of that prediction,
+separated by a percent sign from the value. The last value
+gets the rest of the probability.
+
+Note that the exchange rate between price and value appears
+to be $100K box-office per dollar in showing cost.
 
 ## Background
 
@@ -54,7 +61,11 @@ constraints and nonlinear objectives I could find in a quick
 search was written in FORTRAN and looked to be really hard
 to use.
 
-So I wrote from scratch the solver you see here.
+So I wrote from scratch the solver you see here. I
+eventually joined Wilhelm's League, and will be updating
+this tool as I play my first season. In my warmup the last
+week of the current season, this tool guided me to an
+almost-best lineup.
 
 ## Notes
 
@@ -79,6 +90,10 @@ problem. Getting good estimates to feed it is the real
 challenge, and the whole point of FML. Probably a machine
 learner could be trained, but I'm out of energy — I'll leave
 that task to other, even geekier FML afficionados.
+
+My current direction for this tool is faster search to
+support bigger, automatically generated ensembles for better
+reliability.
 
 ## License
 

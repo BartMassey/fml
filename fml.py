@@ -33,7 +33,7 @@ class Movie():
         v = float(values[-1])
         self.values.append((p, v))
         self.best_prob = 0.0
-        print(self.title, self.values)
+        # print(self.title, self.values)
 
     def ev(self):
         result = 0.0

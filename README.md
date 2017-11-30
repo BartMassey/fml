@@ -7,6 +7,16 @@ picks. The solver finds an optimal lineup given prices and
 predictions: both prices and predictions must be provided by
 the user.
 
+Note that
+[Fantasy Movie League Analyzer](http://analyzer.fmlnerd.com/)
+is a web-based tool that provides most of the functionality
+of this tool, as well as a comparables finder, all with a
+lovely GUI. You should probably just use that unless you
+really want to nerd out. Let me know what features you are
+still wishing for in my Github
+[Issue Tracker](http://github.com/PoHuit/FML/issues), and
+I'll see what I can do. Patches are especially welcome.
+
 ## Usage
 
 This program should work with Python 2, Python 3 or

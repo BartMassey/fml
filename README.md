@@ -39,7 +39,8 @@ The input is a
 [CSV](http://en.wikipedia.org/wiki/Comma-separated_values)
 file. Each row contains the name of the movie, the price of
 the movie in dollars, and predicted values for that movie in
-millions of dollars (fractions are ok). A movie can have
+millions of dollars (fractions are ok, can be preceded with
+a dollar sign). A movie can have
 several predictions, separated by slashes. All but the last
 should have a percent probability of that prediction,
 separated by a percent sign from the value. The last value

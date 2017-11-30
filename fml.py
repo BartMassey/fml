@@ -12,6 +12,12 @@ from __future__ import print_function
 import csv
 import sys
 
+# Strip dollar sign from price string and return as float.
+def dollar_float(p):
+    if p[0] == '$':
+        p = p[1:]
+    return float(p)
+
 # Record of information about a movie.
 class Movie():
     def __init__(self, row):
@@ -25,12 +31,12 @@ class Movie():
         for pvs in values[:-1]:
             ps, vs = pvs.split("%")
             p = float(ps) / 100.0
-            v = float(vs)
+            v = dollar_float(vs)
             prob += p
             assert prob < 1.0
             self.values.append((p, v))
         p = 1.0 - prob
-        v = float(values[-1])
+        v = dollar_float(values[-1])
         self.values.append((p, v))
         self.best_prob = 0.0
         # print(self.title, self.values)

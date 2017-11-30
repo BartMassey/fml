@@ -26,28 +26,37 @@ Try `fml` out on the provided sample by running
 
       python fml.py lineup.csv
 
-(The input may also be provided on standard input.) The
-output for the provided sample input should look like this:
+The input may also be provided on standard input.
 
-      1 Mr. Hero [Sun]
-      3 Car Heists
-      2 Carbots
-      2 The Dwelling Horror
-      $110.0M
+### Input
 
 The input is a
 [CSV](http://en.wikipedia.org/wiki/Comma-separated_values)
 file. Each row contains the name of the movie, the price of
 the movie in dollars, and predicted values for that movie in
 millions of dollars (fractions are ok, can be preceded with
-a dollar sign). A movie can have
-several predictions, separated by slashes. All but the last
-should have a percent probability of that prediction,
-separated by a percent sign from the value. The last value
-gets the rest of the probability.
+a dollar sign). A movie can have several predictions,
+separated by slashes. All but the last should have a percent
+probability of that prediction, separated by a percent sign
+from the value. The last value gets the rest of the
+probability.
 
-Note that the exchange rate between price and value appears
-to be $100K box-office per dollar in showing cost.
+### Output
+
+The
+output for the provided sample input should look like this:
+
+      1x Mr. Hero [Sun] (VR 1.04, BP 7%)
+      3x Car Heists (VR 1.06, BP 7%)
+      2x Carbots (VR 1.14, BP 7%)
+      2x The Dwelling Horror (VR 1.30, BP 9%)
+      $110.0M
+
+The entries here are the number to pick, the film title, the
+*value ratio* (expected return in dollars/FMLbuck, with
+10M/1 being 1.0), and the *Best Performer probability*
+estimated percentage.
+
 
 ## Background
 
@@ -79,6 +88,9 @@ week of the current season, this tool guided me to an
 almost-best lineup.
 
 ## Notes
+
+The exchange rate between price and value appears to be
+$100K box-office per dollar in showing cost.
 
 This solver uses memoized depth-first search in the space of
 screen assignments. The solver is not algorithmically

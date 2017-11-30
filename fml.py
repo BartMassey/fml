@@ -125,5 +125,7 @@ def opt_lineup(movie, screens, budget):
 # Show the estimate.
 value, lineup = opt_lineup(0, 8, 1000)
 for n, m in lineup:
-    print(n, movies[m].title)
+    mm = movies[m]
+    print("%dx %s (VR %.2f, BP %d%%)" %
+          (n, mm.title, 10 * mm.ev() / mm.cost, round(mm.best_prob * 100)))
 print("$%.1fM" % (value,))

@@ -126,7 +126,7 @@ def opt_lineup(movie, screens, budget):
 value, lineup = opt_lineup(0, 8, 1000)
 for n, m in lineup:
     mm = movies[m]
-    if mm.cost > 0:
+    if mm.cost != None:
         vr = "%.2f" % (10 * mm.ev() / mm.cost,)
     else:
         vr = "-"

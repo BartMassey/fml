@@ -126,6 +126,10 @@ def opt_lineup(movie, screens, budget):
 value, lineup = opt_lineup(0, 8, 1000)
 for n, m in lineup:
     mm = movies[m]
-    print("%dx %s (VR %.2f, BP %d%%)" %
-          (n, mm.title, 10 * mm.ev() / mm.cost, round(mm.best_prob * 100)))
+    if mm.cost > 0:
+        vr = "%.2f" % (10 * mm.ev() / mm.cost,)
+    else:
+        vr = "-"
+    print("%dx %s (VR %s, BP %d%%)" %
+          (n, mm.title, vr, round(mm.best_prob * 100)))
 print("$%.1fM" % (value,))

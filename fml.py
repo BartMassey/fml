@@ -38,7 +38,6 @@ class Movie():
         p = 1.0 - prob
         v = dollar_float(values[-1])
         self.values.append((p, v))
-        self.best_prob = 0.0
         # print(self.title, self.values)
 
     def ev(self):
@@ -62,19 +61,6 @@ reader = csv.reader(lineup_file)
 movies = [Movie(row) for row in reader]
 # Add the option of an empty screen.
 movies += [Movie(('[empty screen]', None, "-2.0"))]
-
-# Set the best-performer probabilities.
-pmass = 0.0
-for m in movies:
-    if m.cost == None:
-        continue
-    p = m.ev() * 10 / m.cost
-    if p > 0.0:
-        m.best_prob = p
-        pmass += p
-for m in movies:
-    if m.best_prob > 0.0:
-        m.best_prob /= pmass
 
 # Do a memoized depth-first search of the remaining list finding the
 # best number of showings of the given movie index with the
@@ -100,8 +86,6 @@ def opt_lineup(movie, screens, budget):
     if args in memo:
         return memo[args]
     value = m.ev()
-    if m.best_prob != None:
-        value += m.best_prob * 2.0
     max_showings = min(screens, int(budget // cost))
     best_value = None
     best_lineup = None
@@ -130,6 +114,6 @@ for n, m in lineup:
         vr = "%.2f" % (10 * mm.ev() / mm.cost,)
     else:
         vr = "-"
-    print("%dx %s (VR %s, BP %d%%)" %
-          (n, mm.title, vr, round(mm.best_prob * 100)))
+    print("%dx %s (VR %s)" %
+          (n, mm.title, vr))
 print("$%.1fM" % (value,))
